@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:music_app/album/provider/album_provider.dart';
+import 'package:music_app/album/ui/album_detail.dart';
 import 'package:music_app/home/model/album_model.dart';
 import 'package:music_app/home/model/track_model.dart';
 import 'package:music_app/home/provider/home_provider.dart';
@@ -37,11 +40,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => AlbumProvider(),
-        child: Scaffold(
-          body: makeBody(context),
-        ));
+    return Scaffold(
+      body: makeBody(context),
+    );
   }
 
   Widget makeBody(BuildContext context) {
@@ -185,6 +186,9 @@ class _HomePageState extends State<HomePage> {
                     context
                         .read<AlbumProvider>()
                         .getAlbumTracks(albumModel.albumId!);
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AlbumDetail(),
+                    ));
                   },
                   child: Container(
                     padding:
