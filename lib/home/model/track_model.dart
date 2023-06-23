@@ -4,8 +4,10 @@ class TrackModel {
   String? name;
   String? albumName;
   String? artistName;
+  String? previewUrl;
 
-  TrackModel(this.id, this.albumId, this.name, this.albumName, this.artistName);
+  TrackModel(this.id, this.albumId, this.name, this.albumName, this.artistName,
+      this.previewUrl);
 
   TrackModel.fromMap(Map<String, dynamic> map) {
     id = map["id"] ?? "";
@@ -13,5 +15,6 @@ class TrackModel {
     name = map["name"] ?? "";
     albumName = map["albumName"] ?? "";
     artistName = map["artistName"] ?? "";
+    previewUrl = map["previewURL"] ?? "";
   }
 }

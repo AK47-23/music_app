@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
@@ -8,6 +6,8 @@ import 'package:music_app/album/ui/album_detail.dart';
 import 'package:music_app/home/model/album_model.dart';
 import 'package:music_app/home/model/track_model.dart';
 import 'package:music_app/home/provider/home_provider.dart';
+import 'package:music_app/music/provider/music_provider.dart';
+import 'package:music_app/music/ui/music_player.dart';
 import 'package:music_app/utils/common.dart';
 import 'package:music_app/utils/cs_text_style.dart';
 import 'package:music_app/utils/size_config.dart';
@@ -100,7 +100,14 @@ class _HomePageState extends State<HomePage> {
               if (index < trackList.length) {
                 TrackModel trackModel = trackList[index];
                 return InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    context
+                        .read<MusicProvider>()
+                        .getTrackDetail(trackModel.id!);
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const MusicPlayer(),
+                    ));
+                  },
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 8),

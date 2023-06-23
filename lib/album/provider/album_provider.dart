@@ -6,8 +6,7 @@ class AlbumProvider extends ChangeNotifier {
   final AlbumRepo _albumRepo = AlbumRepo();
   List<TrackModel> tracksList = [];
 
-  bool isLoading = false;
-  //TODO
+  bool isLoading = true;
 
   void getAlbumTracks(String albumId) async {
     tracksList = await _albumRepo.getAlbumTracks(albumId);

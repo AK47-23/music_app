@@ -9,8 +9,7 @@ class AlbumRepo {
     log(albumId.toString());
     List<TrackModel> tracksList = [];
     String albumDetailurl =
-        "${Common.baseUrl}/albums/alb.253965723/tracks?apikey=${Common.apiKey}";
-    //TODO
+        "${Common.baseUrl}/albums/$albumId/tracks?apikey=${Common.apiKey}";
 
     try {
       var response = await Dio().get(

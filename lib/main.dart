@@ -1,13 +1,17 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/album/provider/album_provider.dart';
-import 'package:music_app/album/ui/album_detail.dart';
 import 'package:music_app/home/screens/homepage.dart';
+import 'package:music_app/music/provider/music_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'home/provider/home_provider.dart';
 
 void main() {
+  AssetsAudioPlayer.setupNotificationsOpenAction((notification) {
+    return true;
+  });
   runApp(const MyApp());
 }
 
@@ -24,7 +28,10 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<AlbumProvider>(
             create: (context) => AlbumProvider(),
-          )
+          ),
+          ChangeNotifierProvider<MusicProvider>(
+            create: (context) => MusicProvider(),
+          ),
         ],
         child: Builder(builder: (context) {
           return MaterialApp(
@@ -33,7 +40,7 @@ class MyApp extends StatelessWidget {
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
               useMaterial3: true,
             ),
-            home: AlbumDetail(),
+            home: const HomePage(),
           );
         }),
       );
