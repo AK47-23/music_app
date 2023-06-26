@@ -91,7 +91,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
           : SingleChildScrollView(
               child: Column(
                 children: [
-                  Consumer<MusicProvider>(builder: (context, value, widget) as{
+                  Consumer<MusicProvider>(builder: (context, value, widget) {
                     TrackModel trackModel = value.trackModel;
                     if (init) {
                       initialise();
