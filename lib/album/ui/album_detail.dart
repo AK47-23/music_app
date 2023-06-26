@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:music_app/album/provider/album_provider.dart';
-import 'package:music_app/home/model/track_model.dart';
+import 'package:music_app/artist/repository/artist_repo.dart';
+import 'package:music_app/artist/ui/artist_detail.dart';
+import 'package:music_app/music/model/track_model.dart';
 import 'package:music_app/music/provider/music_provider.dart';
 import 'package:music_app/music/ui/music_player.dart';
 import 'package:music_app/utils/common.dart';
@@ -36,90 +38,67 @@ class AlbumDetail extends StatelessWidget {
                       floating: true,
                       // centerTitle: true,
                       expandedHeight: SizeConfig.screenHeight * .3,
-
+                      leadingWidth: 0,
                       flexibleSpace: FlexibleSpaceBar(
-                        title: Container(
-                          alignment: Alignment.bottomCenter,
-                          width: SizeConfig.screenWidth * .6,
-                          child: InkWell(
-                            onTap: () {
-                              //TODO artist view
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  tracksList[0].albumName!,
-                                  style: whiteTitle1,
-                                ),
-                                Text(
-                                  tracksList[0].artistName!,
-                                  style: whiteTitle2,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        background: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: CachedNetworkImage(
-                            height: SizeConfig.screenHeight * .3,
-                            width: SizeConfig.screenHeight * .3,
-                            fit: BoxFit.cover,
-                            imageUrl: Common.returnImgUrl(
-                              tracksList[0].albumId!,
-                            ),
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            errorWidget: (context, url, error) => Container(
-                              height: 300,
-                              width: 300,
-                              alignment: Alignment.center,
-                              child: const Icon(
-                                Icons.error_outline,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                        ),
+                        background: Common().makeImageResoure(
+                            tracksList[0].albumId!, "albums", .3, .3),
                       ),
                     ),
                     SliverToBoxAdapter(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: tracksList.length,
-                        itemBuilder: (context, index) {
-                          TrackModel trackModel = tracksList[index];
-                          return ListTile(
-                            onTap: () {
-                              context
-                                  .read<MusicProvider>()
-                                  .getTrackDetail(trackModel.id!);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const MusicPlayer(),
-                              ));
-                            },
-                            shape: BeveledRectangleBorder(
-                                borderRadius: BorderRadius.circular(0),
-                                side: const BorderSide(
-                                    color: Colors.grey, width: 0.1)),
-                            leading: Text(
-                              '#${formatter.format(index + 1)}',
-                              style: normalText1,
-                            ),
-                            title: Text(
-                              trackModel.name!,
-                              style: normalText1,
-                            ),
-                            subtitle: Text(
-                              trackModel.artistName!,
-                              style: subTitle1,
-                            ),
-                          );
+                      child: InkWell(
+                        onTap: () {
+                          ArtistRepo().getArtistDetail(tracksList[0].artistId!);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ArtistDetailPage(),
+                          ));
                         },
+                        child: Column(
+                          children: [
+                            Text(
+                              tracksList[0].albumName!,
+                              style: titleText1,
+                            ),
+                            Text(
+                              tracksList[0].artistName!,
+                              style: normalText1,
+                            ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: tracksList.length,
+                              itemBuilder: (context, index) {
+                                TrackModel trackModel = tracksList[index];
+                                return ListTile(
+                                  onTap: () {
+                                    context
+                                        .read<MusicProvider>()
+                                        .getTrackDetail(trackModel.id!);
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => const MusicPlayer(),
+                                    ));
+                                  },
+                                  shape: BeveledRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0),
+                                      side: const BorderSide(
+                                          color: Colors.grey, width: 0.1)),
+                                  leading: Text(
+                                    '#${formatter.format(index + 1)}',
+                                    style: normalText1,
+                                  ),
+                                  title: Text(
+                                    trackModel.name!,
+                                    style: normalText1,
+                                  ),
+                                  subtitle: Text(
+                                    trackModel.artistName!,
+                                    style: subTitle1,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   ])

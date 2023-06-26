@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/home/model/album_model.dart';
-import 'package:music_app/home/model/track_model.dart';
+import 'package:music_app/album/model/album_model.dart';
+import 'package:music_app/music/model/track_model.dart';
 import 'package:music_app/home/repository/home_repo.dart';
 
 class HomeProvider extends ChangeNotifier {

@@ -4,7 +4,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:music_app/home/model/track_model.dart';
+import 'package:music_app/music/model/track_model.dart';
 import 'package:music_app/music/provider/music_provider.dart';
 import 'package:music_app/utils/common.dart';
 import 'package:music_app/utils/cs_text_style.dart';
@@ -26,7 +26,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
   double setVolumeValue = 0;
   bool init = true;
 
-  TrackModel trackModel = TrackModel('', '', '', '', '', '');
+  TrackModel trackModel = TrackModel('', '', '', '', '', '', '');
 
   @override
   void initState() {
@@ -44,13 +44,13 @@ class _MusicPlayerState extends State<MusicPlayer> {
   }
 
   initialise() async {
-    if (trackModel.previewUrl != '') {
+    if (trackModel.albumName != '') {
       try {
         await assetsAudioPlayer.open(
             Audio.liveStream(trackModel.previewUrl!,
                 metas: Metas(
                   image: MetasImage.network(
-                      Common.returnImgUrl(trackModel.albumId!)),
+                      Common.returnAlbumImgUrl(trackModel.albumId!)),
                   title: trackModel.name,
                   artist: trackModel.artistName,
                   album: trackModel.albumName,
@@ -83,16 +83,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    log("message");
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'NOW PLAYING',
-          style: normalText1,
-        ),
-        centerTitle: true,
-        elevation: 0,
-      ),
+      appBar: Common().makeAppbar('NOW PLAYING'),
       body: context.watch<MusicProvider>().isLoading
           ? const Center(
               child: CircularProgressIndicator(),
@@ -101,41 +93,14 @@ class _MusicPlayerState extends State<MusicPlayer> {
               children: [
                 Consumer<MusicProvider>(builder: (context, value, widget) {
                   TrackModel trackModel = value.trackModel;
-                  if (init) {
-                    log("smessage");
-                    initialise();
-                    init = false;
-                  }
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: SizeConfig.screenHeight * .05),
                       Center(
                         child: trackModel.albumId != ''
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: CachedNetworkImage(
-                                  height: SizeConfig.screenHeight * .3,
-                                  width: SizeConfig.screenHeight * .3,
-                                  fit: BoxFit.cover,
-                                  imageUrl: Common.returnImgUrl(
-                                    trackModel.albumId!,
-                                  ),
-                                  placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                  errorWidget: (context, url, error) =>
-                                      Container(
-                                    height: 300,
-                                    width: 300,
-                                    alignment: Alignment.center,
-                                    child: const Icon(
-                                      Icons.error_outline,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                ),
-                              )
+                            ? Common().makeImageResoure(
+                                trackModel.albumId!, "albums", .3, .3)
                             : Container(
                                 width: 65.sp,
                                 height: 65.sp,

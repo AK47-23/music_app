@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:music_app/album/provider/album_provider.dart';
 import 'package:music_app/album/ui/album_detail.dart';
-import 'package:music_app/home/model/album_model.dart';
-import 'package:music_app/home/model/track_model.dart';
+import 'package:music_app/album/model/album_model.dart';
+import 'package:music_app/music/model/track_model.dart';
 import 'package:music_app/home/provider/home_provider.dart';
 import 'package:music_app/music/provider/music_provider.dart';
 import 'package:music_app/music/ui/music_player.dart';
@@ -114,39 +114,18 @@ class _HomePageState extends State<HomePage> {
                     width: SizeConfig.screenWidth * .42,
                     child: Stack(
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: CachedNetworkImage(
-                            height: SizeConfig.screenHeight * .25,
-                            width: SizeConfig.screenWidth * .4,
-                            fit: BoxFit.cover,
-                            imageUrl: Common.returnImgUrl(trackModel.albumId!),
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            errorWidget: (context, url, error) => Container(
-                              height: 300,
-                              width: 300,
-                              alignment: Alignment.center,
-                              child: const Icon(
-                                Icons.error_outline,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                        ),
+                        Common().makeImageResoure(
+                            trackModel.albumId!, "albums", .25, .4),
                         Positioned(
                           bottom: 0,
                           child: GlassmorphicContainer(
                             width: SizeConfig.screenWidth * .4,
                             height: SizeConfig.screenHeight * .05,
                             borderRadius: 0,
-                            linearGradient: const LinearGradient(
-                                colors: [Colors.white38, Colors.white38]),
+                            linearGradient: Common().gradientColors,
                             border: 0,
                             blur: 5,
-                            borderGradient: const LinearGradient(
-                                colors: [Colors.white38, Colors.white38]),
+                            borderGradient: Common().gradientColors,
                             child: Container(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 5),
@@ -203,27 +182,8 @@ class _HomePageState extends State<HomePage> {
                     width: SizeConfig.screenWidth * .4,
                     child: Stack(
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            height: SizeConfig.screenHeight * .25,
-                            width: SizeConfig.screenWidth * .4,
-                            fit: BoxFit.fitHeight,
-                            imageUrl: Common.returnImgUrl(albumModel.albumId!),
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            errorWidget: (context, url, error) => Container(
-                              height: 300,
-                              width: 300,
-                              alignment: Alignment.center,
-                              child: const Icon(
-                                Icons.error_outline,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                        ),
+                        Common().makeImageResoure(
+                            albumModel.albumId!, "albums", .25, .4),
                         Positioned(
                           bottom: 0,
                           child: GlassmorphicContainer(
