@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 import 'package:music_app/utils/cs_text_style.dart';
 import 'package:music_app/utils/size_config.dart';
 
@@ -24,6 +25,7 @@ class Common {
         title,
         style: normalText1,
       ),
+      backgroundColor: Colors.grey.shade100,
       centerTitle: true,
       elevation: 0,
     );
@@ -51,6 +53,28 @@ class Common {
           ),
         ),
       ),
+    );
+  }
+
+  GlassmorphicContainer glassmorphicContainer(
+      String title, double widthFactor, double heightFactor) {
+    return GlassmorphicContainer(
+      width: SizeConfig.screenWidth * widthFactor,
+      height: SizeConfig.screenHeight * heightFactor,
+      borderRadius: 0,
+      linearGradient: gradientColors,
+      border: 0,
+      blur: 5,
+      borderGradient: gradientColors,
+      child: Container(
+          alignment: Alignment.center,
+          width: SizeConfig.screenWidth * .35,
+          child: Text(
+            title,
+            style: normalText1,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+          )),
     );
   }
 }

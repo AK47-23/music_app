@@ -6,7 +6,6 @@ import 'package:music_app/utils/common.dart';
 
 class AlbumRepo {
   Future<List<TrackModel>> getAlbumTracks(String albumId) async {
-    log(albumId.toString());
     List<TrackModel> tracksList = [];
     String albumDetailurl =
         "${Common.baseUrl}/albums/$albumId/tracks?apikey=${Common.apiKey}";

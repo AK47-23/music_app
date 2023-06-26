@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/album/model/album_model.dart';
+import 'package:music_app/album/provider/album_provider.dart';
+import 'package:music_app/album/ui/album_detail.dart';
 import 'package:music_app/artist/model/artist_model.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
 import 'package:music_app/utils/common.dart';
+import 'package:music_app/utils/cs_text_style.dart';
+import 'package:music_app/utils/size_config.dart';
 import 'package:provider/provider.dart';
 
 class ArtistDetailPage extends StatelessWidget {
@@ -10,62 +15,116 @@ class ArtistDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: Common().makeAppbar('ARTIST DETAIL'),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // SizedBox(height: 60),
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 20),
-            //   child: Text(
-            //     'Artist Detail',
-            //     style: TextStyle(
-            //       fontSize: 24,
-            //       fontWeight: FontWeight.bold,
-            //       color: Colors.white,
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(height: 20),
-            // SizedBox(height: 20),
-            // Text(
-            //   "artistName",
-            //   style: TextStyle(
-            //     fontSize: 24,
-            //     fontWeight: FontWeight.bold,
-            //     color: Colors.white,
-            //   ),
-            // ),
-            // SizedBox(height: 20),
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 20),
-            //   child: Text(
-            //     " adasdasdas",
-            //     textAlign: TextAlign.center,
-            //     style: TextStyle(
-            //       fontSize: 16,
-            //       color: Colors.white,
-            //     ),
-            //   ),
-            // ),
-            makeBody(context),
-          ],
-        ),
-      ),
+      body: makeBody(context),
     );
   }
 
   makeBody(BuildContext context) {
-    return SingleChildScrollView(
-      child: Consumer<ArtistProvider>(builder: (context, value, widget) {
-        ArtistModel artistModel = value.artistModel;
-        return Column(
-          children: [
-            Common().makeImageResoure(artistModel.id!, "artists", .2, .2),
-          ],
-        );
-      }),
+    return context.watch<ArtistProvider>().isArtistLoading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : SingleChildScrollView(
+            child: Consumer<ArtistProvider>(builder: (context, value, widget) {
+              ArtistModel artistModel = value.artistModel;
+              return SizedBox(
+                width: SizeConfig.screenWidth,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: SizeConfig.screenHeight * .04,
+                    ),
+                    Common().makeImageResoure(
+                        artistModel.image!, "artists", .3, .2),
+                    SizedBox(
+                      height: SizeConfig.screenHeight * .03,
+                    ),
+                    Text(
+                      artistModel.name!,
+                      style: titleText1,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      height: SizeConfig.screenHeight * .1,
+                      child: Text(
+                        artistModel.bio!,
+                        style: subTitle1,
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.screenHeight * .02,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 15),
+                      width: SizeConfig.screenWidth,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
+                          ),
+                          color: Colors.white),
+                      child: Column(
+                        children: [
+                          buildCategoryTitle('TOP'),
+                          buildCustomAlbumList(value.topList),
+                          buildCategoryTitle('NEW'),
+                          buildCustomAlbumList(value.newList),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          );
+  }
+
+  buildCategoryTitle(String title) {
+    return Text(
+      title,
+      style: titleText2,
+    );
+  }
+
+  Widget buildCustomAlbumList(List<AlbumModel> albumList) {
+    return SizedBox(
+      height: SizeConfig.screenHeight * .25,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: albumList.length,
+          itemBuilder: (context, index) {
+            AlbumModel albumModel = albumList[index];
+            return InkWell(
+              onTap: () {
+                context
+                    .read<AlbumProvider>()
+                    .getAlbumTracks(albumModel.albumId!);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AlbumDetail(),
+                ));
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                width: SizeConfig.screenWidth * .4,
+                child: Stack(
+                  children: [
+                    Common().makeImageResoure(
+                        albumModel.albumId!, "albums", .25, .4),
+                    Positioned(
+                        bottom: 0,
+                        child: Common().glassmorphicContainer(
+                            albumModel.albumName!, .4, .05))
+                  ],
+                ),
+              ),
+            );
+          }),
     );
   }
 }

@@ -1,8 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:music_app/album/provider/album_provider.dart';
-import 'package:music_app/artist/repository/artist_repo.dart';
+import 'package:music_app/artist/provider/artist_provider.dart';
 import 'package:music_app/artist/ui/artist_detail.dart';
 import 'package:music_app/music/model/track_model.dart';
 import 'package:music_app/music/provider/music_provider.dart';
@@ -47,7 +46,9 @@ class AlbumDetail extends StatelessWidget {
                     SliverToBoxAdapter(
                       child: InkWell(
                         onTap: () {
-                          ArtistRepo().getArtistDetail(tracksList[0].artistId!);
+                          context
+                              .read<ArtistProvider>()
+                              .getArtistDetail(tracksList[0].artistId!);
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const ArtistDetailPage(),
                           ));

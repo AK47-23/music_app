@@ -185,28 +185,9 @@ class _HomePageState extends State<HomePage> {
                         Common().makeImageResoure(
                             albumModel.albumId!, "albums", .25, .4),
                         Positioned(
-                          bottom: 0,
-                          child: GlassmorphicContainer(
-                            width: SizeConfig.screenWidth * .4,
-                            height: SizeConfig.screenHeight * .05,
-                            borderRadius: 0,
-                            linearGradient: const LinearGradient(
-                                colors: [Colors.white38, Colors.white38]),
-                            border: 0,
-                            blur: 5,
-                            borderGradient: const LinearGradient(
-                                colors: [Colors.white38, Colors.white38]),
-                            child: Container(
-                                alignment: Alignment.center,
-                                width: SizeConfig.screenWidth * .35,
-                                child: Text(
-                                  albumModel.albumName!,
-                                  style: normalText1,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                )),
-                          ),
-                        )
+                            bottom: 0,
+                            child: Common().glassmorphicContainer(
+                                albumModel.albumName!, .4, .05))
                       ],
                     ),
                   ),
