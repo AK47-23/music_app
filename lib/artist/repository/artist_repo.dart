@@ -13,26 +13,33 @@ class ArtistRepo {
     try {
       var response = await Dio().get(artistUrl);
       artistModel = ArtistModel.fromMap(response.data["artists"][0]);
+      artistModel.bio= removeLinks(artistModel.bio!);
     } catch (e) {
       log(e.toString());
     }
 
     return artistModel;
   }
+  List<String> extractLinks(String text){
+    RegExp regExp= RegExp(r'<a href="(.*?)"</a>');
+    Iterable<RegExpMatch> matches= regExp.allMatches(text);
 
-  Future<String> provideAritstImageUrlR(String id) async {
-    String imageUrl = "";
-
-    String url =
-        "https://api.napster.com/v2.2/artists/$id/images?apikey=${Common.apiKey}";
-    try {
-      var response = await Dio().get(url);
-      imageUrl = response.data["images"][0]["url"];
-    } catch (e) {
-      log(e.toString());
+    List<String> links=[];
+    for(RegExpMatch match in matches){
+      String link= match.group(1)!;
+      links.add(link);
     }
-    return imageUrl;
+    return links;
   }
+
+  String removeLinks(String text){
+    RegExp regExp= RegExp(r'<a href="(.*?)">.*?</a>');
+    String result= text.replaceAll(regExp, '');
+    return result;
+  }
+
+
+
 
   Future<List<AlbumModel>> getTopArtistAlbumsList(String id) async {
     List<AlbumModel> albumList = [];

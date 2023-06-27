@@ -10,5 +10,6 @@ class ArtistModel {
     id = map["id"];
     name = map["name"] ?? "";
     bio = map["bios"][0]["bio"] ?? "";
+    image= map["links"]["images"]["href"]??"";
   }
 }

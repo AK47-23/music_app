@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:music_app/album/model/album_model.dart';
+import 'package:music_app/artist/model/artist_model.dart';
 import 'package:music_app/music/model/track_model.dart';
 import 'package:music_app/utils/common.dart';
 
@@ -50,5 +51,29 @@ class HomeRepo {
     }
 
     return albumList;
+  }
+
+
+  Future<List<ArtistModel>> getTopArtists(String limit) async {
+    final topArtistUrl =
+        "${Common.baseUrl}artists/top?apikey=${Common.apiKey}&limit=$limit";
+
+    List<ArtistModel> artistList = [];
+    try {
+      var response = await Dio().get(
+        topArtistUrl,
+      );
+
+      if (response.statusCode == 200) {
+        for (Map<String, dynamic> map in response.data["artists"]) {
+          ArtistModel artistModel = ArtistModel.fromMap(map);
+          artistList.add(artistModel);
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return artistList;
   }
 }

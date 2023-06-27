@@ -31,15 +31,16 @@ class Common {
     );
   }
 
-  ClipRRect makeImageResoure(
+  ClipRRect makeImageResource(
       String id, String type, double heightFactor, double widthFactor) {
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: CachedNetworkImage(
         height: SizeConfig.screenHeight * heightFactor,
         width: SizeConfig.screenHeight * widthFactor,
         fit: BoxFit.cover,
-        imageUrl: type == "albums" ? Common.returnAlbumImgUrl(id) : id,
+        imageUrl: type == "albums" ? Common.returnAlbumImgUrl(id) : "https://api.napster.com/imageserver/v2/artists/$id/images/230x153.jpg",
         placeholder: (context, url) => const Center(
           child: CircularProgressIndicator(),
         ),

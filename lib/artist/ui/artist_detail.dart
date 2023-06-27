@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:music_app/album/model/album_model.dart';
 import 'package:music_app/album/provider/album_provider.dart';
@@ -6,6 +8,7 @@ import 'package:music_app/artist/model/artist_model.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
 import 'package:music_app/utils/common.dart';
 import 'package:music_app/utils/cs_text_style.dart';
+import 'package:music_app/utils/navigate.dart';
 import 'package:music_app/utils/size_config.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +32,7 @@ class ArtistDetailPage extends StatelessWidget {
         : SingleChildScrollView(
             child: Consumer<ArtistProvider>(builder: (context, value, widget) {
               ArtistModel artistModel = value.artistModel;
+              log(artistModel.image!.toString());
               return SizedBox(
                 width: SizeConfig.screenWidth,
                 child: Column(
@@ -37,8 +41,8 @@ class ArtistDetailPage extends StatelessWidget {
                     SizedBox(
                       height: SizeConfig.screenHeight * .04,
                     ),
-                    Common().makeImageResoure(
-                        artistModel.image!, "artists", .3, .2),
+                    Common().makeImageResource(
+                        artistModel.id!, "artists", .3, .25),
                     SizedBox(
                       height: SizeConfig.screenHeight * .03,
                     ),
@@ -60,8 +64,8 @@ class ArtistDetailPage extends StatelessWidget {
                       height: SizeConfig.screenHeight * .02,
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 15),
+                      padding: const EdgeInsets.only(
+                          top: 10,bottom:10, right:0,left: 15),
                       width: SizeConfig.screenWidth,
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -70,6 +74,7 @@ class ArtistDetailPage extends StatelessWidget {
                           ),
                           color: Colors.white),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           buildCategoryTitle('TOP'),
                           buildCustomAlbumList(value.topList),
@@ -105,16 +110,14 @@ class ArtistDetailPage extends StatelessWidget {
                 context
                     .read<AlbumProvider>()
                     .getAlbumTracks(albumModel.albumId!);
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AlbumDetail(),
-                ));
+                normalNavigate(context, AlbumDetail());
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
                 width: SizeConfig.screenWidth * .4,
                 child: Stack(
                   children: [
-                    Common().makeImageResoure(
+                    Common().makeImageResource(
                         albumModel.albumId!, "albums", .25, .4),
                     Positioned(
                         bottom: 0,

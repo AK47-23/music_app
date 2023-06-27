@@ -40,8 +40,9 @@ class MyApp extends StatelessWidget {
         child: Builder(builder: (context) {
           return MaterialApp(
             title: 'Music App',
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
               useMaterial3: true,
             ),
             home: const HomePage(),

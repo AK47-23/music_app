@@ -14,15 +14,15 @@ class ArtistProvider extends ChangeNotifier {
   List<AlbumModel> newList = [];
 
   void getArtistDetail(String id) async {
+    isArtistLoading = true;
     log(id);
     artistModel = await _artistRepo.getArtistDetail(id);
-    provideAritstImageUrl(id);
-    getTopList(id);
-    getNewList(id);
-  }
 
-  void provideAritstImageUrl(String id) async {
-    artistModel.image = await _artistRepo.provideAritstImageUrlR(id);
+    if(artistModel.name!=''){
+      getTopList(id);
+      getNewList(id);
+    }
+
   }
 
   void getTopList(String id) async {

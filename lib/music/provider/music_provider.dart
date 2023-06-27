@@ -9,8 +9,14 @@ class MusicProvider extends ChangeNotifier {
   bool isLoading = true;
 
   void getTrackDetail(String trackId) async {
+    isLoading = true;
+    trackModel = TrackModel('', '', '', '', '', '', '');
     trackModel = await musicRepo.getTrackDetails(trackId);
-    isLoading = false;
+    if (trackModel.previewUrl != null &&
+        trackModel.previewUrl!.isNotEmpty &&
+        trackModel.previewUrl != '') {
+      isLoading = false;
+    }
     notifyListeners();
   }
 }

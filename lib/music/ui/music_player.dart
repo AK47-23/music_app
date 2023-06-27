@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:music_app/album/ui/album_detail.dart';
 import 'package:music_app/music/model/track_model.dart';
 import 'package:music_app/music/provider/music_provider.dart';
 import 'package:music_app/utils/common.dart';
 import 'package:music_app/utils/cs_text_style.dart';
+import 'package:music_app/utils/navigate.dart';
 import 'package:music_app/utils/size_config.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -32,14 +34,14 @@ class _MusicPlayerState extends State<MusicPlayer> {
     super.initState();
     init = true;
     assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
-
+    // Future.delayed(const Duration(seconds: 2)).then((value) => initialise());
     VolumeController().listener((volume) {
       setState(() => setVolumeValue = volume);
     });
 
     VolumeController().getVolume().then((volume) => setVolumeValue = volume);
 
-    initialise();
+    // initialise();
   }
 
   initialise() async {
@@ -104,7 +106,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         SizedBox(height: SizeConfig.screenHeight * .05),
                         Center(
                           child: trackModel.albumId != ''
-                              ? Common().makeImageResoure(
+                              ? Common().makeImageResource(
                                   trackModel.albumId!, "albums", .35, .3)
                               : Container(
                                   width: 65.sp,
@@ -133,7 +135,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         SizedBox(height: SizeConfig.screenHeight * .01),
                         InkWell(
                             onTap: () {
-                              //TODO
+                              normalNavigate(context, AlbumDetail());
                             },
                             child:
                                 Text(trackModel.artistName!, style: subTitle1)),
