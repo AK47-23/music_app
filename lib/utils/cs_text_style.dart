@@ -6,31 +6,21 @@ TextStyle titleText1 = GoogleFonts.roboto(
     fontSize: 24.sp, fontWeight: FontWeight.w400, letterSpacing: 1);
 
 TextStyle titleText2 = GoogleFonts.roboto(
-    color: Colors.black,
+    // color: Colors.black,
     fontSize: 20.sp,
     fontWeight: FontWeight.w400,
     letterSpacing: 1);
 
 TextStyle normalText1 = GoogleFonts.roboto(
-    color: Colors.black,
+    // color: Colors.black,
     fontSize: 16.sp,
     fontWeight: FontWeight.w400,
     letterSpacing: 1);
 
-TextStyle whiteTitle1 = GoogleFonts.roboto(
-    color: Colors.white,
-    fontSize: 18.sp,
-    fontWeight: FontWeight.w600,
-    letterSpacing: 1);
 
-TextStyle whiteTitle2 = GoogleFonts.roboto(
-    color: Colors.grey,
-    fontSize: 15.sp,
-    fontWeight: FontWeight.w400,
-    letterSpacing: 1);
 
 TextStyle subTitle1 = GoogleFonts.roboto(
-    color: Colors.grey,
-    fontSize: 14.sp,
+    // color: Colors.grey,
+    fontSize: 15.sp,
     fontWeight: FontWeight.w400,
     letterSpacing: 1);

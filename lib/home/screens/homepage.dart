@@ -27,11 +27,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   ScrollController trackScroll = ScrollController();
   ScrollController albumScroll = ScrollController();
-  ScrollController artistScroll= ScrollController();
+  ScrollController artistScroll = ScrollController();
 
   int trackIndex = 5;
   int albumIndex = 5;
-  int artistIndex= 5;
+  int artistIndex = 5;
 
   @override
   void initState() {
@@ -56,10 +56,9 @@ class _HomePageState extends State<HomePage> {
     SizeConfig().init(context);
     return SafeArea(
       child: context.watch<HomeProvider>().isAlbumLoading &&
-              context.watch<HomeProvider>().isTrackLoading && context.read<HomeProvider>().isArtistLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
+              context.watch<HomeProvider>().isTrackLoading &&
+              context.read<HomeProvider>().isArtistLoading
+          ? Common().loadingIndicator(context)
           : SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(left: 7.0, top: 15),
@@ -67,25 +66,30 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                   Center(child:Text(
-                     'ECHO',
-                     style: titleText1,
-                   ), ),
+                    Center(
+                      child: Text(
+                        'ECHO',
+                        style: titleText1,
+                      ),
+                    ),
                     SizedBox(
                       height: 15.sp,
                     ),
-                   title2Text('Top Tracks'),
+                    title2Text('Top Tracks'),
                     buildTopTrackList(),
                     SizedBox(
                       height: 15.sp,
                     ),
-                   title2Text('Top Albums'),
+                    title2Text('Top Albums'),
                     buildTopAlbumList(),
                     SizedBox(
                       height: 15.sp,
                     ),
                     title2Text('Top Artists'),
                     buildTopArtistList(),
+                    SizedBox(
+                      height: 25.sp,
+                    ),
                   ],
                 ),
               ),
@@ -93,8 +97,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Text title2Text(String text){
-    return  Text(
+  Text title2Text(String text) {
+    return Text(
       text,
       style: titleText2,
     );
@@ -103,67 +107,71 @@ class _HomePageState extends State<HomePage> {
   Widget buildTopTrackList() {
     return Consumer<HomeProvider>(builder: (context, value, widget) {
       List<TrackModel> trackList = value.tracksList;
-      return SizedBox(
-        height: SizeConfig.screenHeight * .25,
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            controller: trackScroll,
-            itemCount: trackList.length + 1,
-            itemBuilder: (context, index) {
-              if (index < trackList.length) {
-                TrackModel trackModel = trackList[index];
-                return InkWell(
-                  onTap: () {
-                    context
-                        .read<MusicProvider>()
-                        .getTrackDetail(trackModel.id!);
-                    normalNavigate(context, const MusicPlayer());
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                    width: SizeConfig.screenWidth * .42,
-                    child: Stack(
-                      children: [
-                        Common().makeImageResource(
-                            trackModel.albumId!, "albums", .25, .4),
-                        Positioned(
-                          bottom: 0,
-                          child: GlassmorphicContainer(
-                            width: SizeConfig.screenWidth * .4,
-                            height: SizeConfig.screenHeight * .05,
-                            borderRadius: 0,
-                            linearGradient: Common().gradientColors,
-                            border: 0,
-                            blur: 5,
-                            borderGradient: Common().gradientColors,
-                            child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                alignment: Alignment.center,
-                                width: SizeConfig.screenWidth * .35,
-                                child: Text(
-                                  trackModel.name!,
-                                  style: normalText1,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                )),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              } else {
-                return Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: const CircularProgressIndicator(),
-                );
-              }
-            }),
-      );
+      return
     });
+  }
+
+  SizedBox tile(ScrollController scrollController,int listLength,String id,String name,String type){
+    return SizedBox(
+      height: SizeConfig.screenHeight * .25,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          controller: scrollController,
+          itemCount: listLength + 1,
+          itemBuilder: (context, index) {
+            if (index < listLength) {
+              return InkWell(
+                onTap: () {
+                  if(type=="albums")
+                  context
+                      .read<MusicProvider>()
+                      .getTrackDetail(id);
+                  normalNavigate(context, const MusicPlayer());
+                },
+                child: Container(
+                  padding:
+                  const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                  width: SizeConfig.screenWidth * .42,
+                  child: Stack(
+                    children: [
+                      Common().makeImageResource(
+                          trackModel.albumId!, "albums", .25, .4),
+                      Positioned(
+                        bottom: 0,
+                        child: GlassmorphicContainer(
+                          width: SizeConfig.screenWidth * .4,
+                          height: SizeConfig.screenHeight * .05,
+                          borderRadius: 0,
+                          linearGradient: Common().gradientColors,
+                          border: 0,
+                          blur: 5,
+                          borderGradient: Common().gradientColors,
+                          child: Container(
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 5),
+                              alignment: Alignment.center,
+                              width: SizeConfig.screenWidth * .35,
+                              child: Text(
+                                trackModel.name!,
+                                style: normalText1,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                              )),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            } else {
+              return Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: const CircularProgressIndicator(),
+              );
+            }
+          }),
+    );
   }
 
   Widget buildTopAlbumList() {
@@ -230,11 +238,11 @@ class _HomePageState extends State<HomePage> {
                     context
                         .read<ArtistProvider>()
                         .getArtistDetail(artistModel.id!);
-                    normalNavigate(context,const ArtistDetailPage());
+                    normalNavigate(context, const ArtistDetailPage());
                   },
                   child: Container(
                     padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
                     width: SizeConfig.screenWidth * .4,
                     child: Stack(
                       children: [

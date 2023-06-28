@@ -15,7 +15,6 @@ class ArtistProvider extends ChangeNotifier {
 
   void getArtistDetail(String id) async {
     isArtistLoading = true;
-    log(id);
     artistModel = await _artistRepo.getArtistDetail(id);
 
     if(artistModel.name!=''){
@@ -27,6 +26,7 @@ class ArtistProvider extends ChangeNotifier {
 
   void getTopList(String id) async {
     topList = await _artistRepo.getTopArtistAlbumsList(id);
+    notifyListeners();
   }
 
   void getNewList(String id) async {

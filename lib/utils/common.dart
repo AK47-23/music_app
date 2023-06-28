@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:music_app/utils/cs_text_style.dart';
 import 'package:music_app/utils/size_config.dart';
@@ -25,7 +26,6 @@ class Common {
         title,
         style: normalText1,
       ),
-      backgroundColor: Colors.grey.shade100,
       centerTitle: true,
       elevation: 0,
     );
@@ -33,17 +33,17 @@ class Common {
 
   ClipRRect makeImageResource(
       String id, String type, double heightFactor, double widthFactor) {
-
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: CachedNetworkImage(
         height: SizeConfig.screenHeight * heightFactor,
         width: SizeConfig.screenHeight * widthFactor,
         fit: BoxFit.cover,
-        imageUrl: type == "albums" ? Common.returnAlbumImgUrl(id) : "https://api.napster.com/imageserver/v2/artists/$id/images/230x153.jpg",
-        placeholder: (context, url) => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        imageUrl: type == "albums"
+            ? Common.returnAlbumImgUrl(id)
+            : "https://api.napster.com/imageserver/v2/artists/$id/images/230x153.jpg",
+        placeholder: (context, url) =>  Common().circularProgressIndicator(context),
+
         errorWidget: (context, url, error) => Container(
           height: 300,
           width: 300,
@@ -68,6 +68,7 @@ class Common {
       blur: 5,
       borderGradient: gradientColors,
       child: Container(
+          padding: const EdgeInsets.only(left: 5),
           alignment: Alignment.center,
           width: SizeConfig.screenWidth * .35,
           child: Text(
@@ -76,6 +77,18 @@ class Common {
             softWrap: true,
             overflow: TextOverflow.ellipsis,
           )),
+    );
+  }
+
+  Center circularProgressIndicator(BuildContext context){
+    return  Center(child: CircularProgressIndicator(color: Theme.of(context).secondaryHeaderColor,),);
+  }
+
+  Center loadingIndicator(BuildContext context) {
+    return Center(
+      child: SpinKitWave(
+        color: Theme.of(context).secondaryHeaderColor,
+        size: 50.0,)
     );
   }
 }

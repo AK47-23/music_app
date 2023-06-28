@@ -11,6 +11,7 @@ import 'package:music_app/utils/cs_text_style.dart';
 import 'package:music_app/utils/navigate.dart';
 import 'package:music_app/utils/size_config.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AlbumDetail extends StatelessWidget {
   AlbumDetail({super.key});
@@ -27,87 +28,85 @@ class AlbumDetail extends StatelessWidget {
 
   makeBody(BuildContext context) {
     return context.watch<AlbumProvider>().isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? Common().loadingIndicator(context)
         : Consumer<AlbumProvider>(builder: (context, value, widget) {
             List<TrackModel> tracksList = value.tracksList;
             return tracksList.isNotEmpty
-                ?makeeBody(context, tracksList)
-            // CustomScrollView(slivers: [
-            //         SliverAppBar(
-            //           floating: true,
-            //           // centerTitle: true,
-            //           expandedHeight: SizeConfig.screenHeight * .3,
-            //           leadingWidth: 0,
-            //           flexibleSpace: FlexibleSpaceBar(
-            //             // centerTitle: true,
-            //             // title: Text('ALBUM DETAIL',style:normalText1),
-            //             background: Common().makeImageResource(
-            //                 tracksList[0].albumId!, "albums", .3, .3),
-            //           ),
-            //         ),
-            //         SliverToBoxAdapter(
-            //           child: Column(
-            //             children: [
-            //               Text(
-            //                 tracksList[0].albumName!,
-            //                 style: titleText1,
-            //               ),
-            //               InkWell(
-            //                 onTap: () {
-            //                   context
-            //                       .read<ArtistProvider>()
-            //                       .getArtistDetail(tracksList[0].artistId!);
-            //                   normalNavigate(
-            //                     context,
-            //                     const ArtistDetailPage(),
-            //                   );
-            //                 },
-            //                 child: Text(
-            //                   tracksList[0].artistName!,
-            //                   style: normalText1,
-            //                 ),
-            //               ),
-            //               ListView.builder(
-            //                 shrinkWrap: true,
-            //                 physics: const NeverScrollableScrollPhysics(),
-            //                 itemCount: tracksList.length,
-            //                 itemBuilder: (context, index) {
-            //                   TrackModel trackModel = tracksList[index];
-            //                   return ListTile(
-            //                     onTap: () {
-            //                       context
-            //                           .read<MusicProvider>()
-            //                           .getTrackDetail(trackModel.id!);
-            //                       normalNavigate(
-            //                         context,
-            //                         const MusicPlayer(),
-            //                       );
-            //                     },
-            //                     shape: BeveledRectangleBorder(
-            //                         borderRadius: BorderRadius.circular(0),
-            //                         side: const BorderSide(
-            //                             color: Colors.grey, width: 0.1)),
-            //                     leading: Text(
-            //                       '#${formatter.format(index + 1)}',
-            //                       style: normalText1,
-            //                     ),
-            //                     title: Text(
-            //                       trackModel.name!,
-            //                       style: normalText1,
-            //                     ),
-            //                     subtitle: Text(
-            //                       trackModel.artistName!,
-            //                       style: subTitle1,
-            //                     ),
-            //                   );
-            //                 },
-            //               ),
-            //             ],
-            //           ),
-            //         )
-            //       ])
+                ?SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: SizeConfig.screenHeight*.01,),
+                  Common().makeImageResource(tracksList[0].albumId!, "albums", .3, .25),
+                  Text(
+                    tracksList[0].albumName!,
+                    style: titleText1,
+                    textAlign: TextAlign.center,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      context
+                          .read<ArtistProvider>()
+                          .getArtistDetail(tracksList[0].artistId!);
+                      normalNavigate(
+                        context,
+                        const ArtistDetailPage(),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(radius: 10,child: Icon(Icons.person,size: 15.sp,),),
+                       SizedBox(width: 15.sp),
+                        Text(
+                          tracksList[0].artistName!,
+                          style: normalText1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20.sp),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: tracksList.length,
+                    itemBuilder: (context, index) {
+                      TrackModel trackModel = tracksList[index];
+                      return ListTile(
+                        onTap: () {
+                          context
+                              .read<MusicProvider>()
+                              .getTrackDetail(trackModel.id!);
+                          normalNavigate(
+                            context,
+                            const MusicPlayer(),
+                          );
+                        },
+                        shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                            side: const BorderSide(
+                                color: Colors.grey, width: 0.1)),
+                        leading: Padding(
+                          padding: const EdgeInsets.only(top:8.0),
+                          child: Text(
+                            '#${formatter.format(index + 1)}',
+                            style: normalText1,
+                          ),
+                        ),
+                        title: Text(
+                          trackModel.name!,
+                          style: normalText1,
+                        ),
+                        subtitle: Text(
+                          trackModel.artistName!,
+                          style: subTitle1,
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            )
+
                 : Center(
                     child: Text(
                       'Something went wrong!',
@@ -117,69 +116,5 @@ class AlbumDetail extends StatelessWidget {
           });
   }
 
-  Widget makeeBody(BuildContext context, List<TrackModel> tracksList) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(height: 10,),
-          Common().makeImageResource(tracksList[0].albumId!, "albums", .3, .25),
-          Text(
-            tracksList[0].albumName!,
-            style: titleText1,
-            textAlign: TextAlign.center,
-          ),
-          InkWell(
-            onTap: () {
-              context
-                  .read<ArtistProvider>()
-                  .getArtistDetail(tracksList[0].artistId!);
-              normalNavigate(
-                context,
-                const ArtistDetailPage(),
-              );
-            },
-            child: Text(
-              tracksList[0].artistName!,
-              style: normalText1,
-            ),
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: tracksList.length,
-            itemBuilder: (context, index) {
-              TrackModel trackModel = tracksList[index];
-              return ListTile(
-                onTap: () {
-                  context
-                      .read<MusicProvider>()
-                      .getTrackDetail(trackModel.id!);
-                  normalNavigate(
-                    context,
-                    const MusicPlayer(),
-                  );
-                },
-                shape: BeveledRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
-                    side: const BorderSide(
-                        color: Colors.grey, width: 0.1)),
-                leading: Text(
-                  '#${formatter.format(index + 1)}',
-                  style: normalText1,
-                ),
-                title: Text(
-                  trackModel.name!,
-                  style: normalText1,
-                ),
-                subtitle: Text(
-                  trackModel.artistName!,
-                  style: subTitle1,
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
+
 }

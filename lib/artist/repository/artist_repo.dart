@@ -20,26 +20,12 @@ class ArtistRepo {
 
     return artistModel;
   }
-  List<String> extractLinks(String text){
-    RegExp regExp= RegExp(r'<a href="(.*?)"</a>');
-    Iterable<RegExpMatch> matches= regExp.allMatches(text);
-
-    List<String> links=[];
-    for(RegExpMatch match in matches){
-      String link= match.group(1)!;
-      links.add(link);
-    }
-    return links;
-  }
 
   String removeLinks(String text){
     RegExp regExp= RegExp(r'<a href="(.*?)">.*?</a>');
     String result= text.replaceAll(regExp, '');
     return result;
   }
-
-
-
 
   Future<List<AlbumModel>> getTopArtistAlbumsList(String id) async {
     List<AlbumModel> albumList = [];

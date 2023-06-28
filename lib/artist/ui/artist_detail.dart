@@ -11,6 +11,7 @@ import 'package:music_app/utils/cs_text_style.dart';
 import 'package:music_app/utils/navigate.dart';
 import 'package:music_app/utils/size_config.dart';
 import 'package:provider/provider.dart';
+import 'package:readmore/readmore.dart';
 
 class ArtistDetailPage extends StatelessWidget {
   const ArtistDetailPage({super.key});
@@ -18,7 +19,6 @@ class ArtistDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       appBar: Common().makeAppbar('ARTIST DETAIL'),
       body: makeBody(context),
     );
@@ -26,9 +26,7 @@ class ArtistDetailPage extends StatelessWidget {
 
   makeBody(BuildContext context) {
     return context.watch<ArtistProvider>().isArtistLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? Common().loadingIndicator(context)
         : SingleChildScrollView(
             child: Consumer<ArtistProvider>(builder: (context, value, widget) {
               ArtistModel artistModel = value.artistModel;
@@ -39,7 +37,7 @@ class ArtistDetailPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: SizeConfig.screenHeight * .04,
+                      height: SizeConfig.screenHeight * .02,
                     ),
                     Common().makeImageResource(
                         artistModel.id!, "artists", .3, .25),
@@ -49,35 +47,38 @@ class ArtistDetailPage extends StatelessWidget {
                     Text(
                       artistModel.name!,
                       style: titleText1,
+                      textAlign: TextAlign.center,
                     ),
+
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
-                      height: SizeConfig.screenHeight * .1,
-                      child: Text(
-                        artistModel.bio!,
+                      child: ReadMoreText(artistModel.bio!,trimLines: 3,
                         style: subTitle1,
-                        maxLines: 5,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                        colorClickableText: Colors.pink,
+                        trimMode: TrimMode.Line,
+                        trimCollapsedText: 'Show more',
+                        trimExpandedText: 'Show less',
+                        moreStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold,color: Colors.blueAccent),),
                     ),
                     SizedBox(
                       height: SizeConfig.screenHeight * .02,
                     ),
                     Container(
                       padding: const EdgeInsets.only(
-                          top: 10,bottom:10, right:0,left: 15),
+                          top: 26,bottom:10, right:0,left: 15),
                       width: SizeConfig.screenWidth,
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            topRight: Radius.circular(12),
+                      decoration:  BoxDecoration(
+                          borderRadius:const BorderRadius.only(
+                            topLeft: Radius.circular(42),
+                            topRight: Radius.circular(42),
                           ),
-                          color: Colors.white),
+                          color: Theme.of(context).primaryColor),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           buildCategoryTitle('TOP'),
                           buildCustomAlbumList(value.topList),
+                          SizedBox(height: SizeConfig.screenHeight*.02,),
                           buildCategoryTitle('NEW'),
                           buildCustomAlbumList(value.newList),
                         ],
