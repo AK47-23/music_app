@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -7,7 +5,7 @@ import 'package:glassmorphism/glassmorphism.dart';
 import 'package:music_app/album/provider/album_provider.dart';
 import 'package:music_app/album/ui/album_detail_page.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
-import 'package:music_app/artist/ui/artist_detail.dart';
+import 'package:music_app/artist/ui/artist_detail_page.dart';
 import 'package:music_app/utils/cs_text_style.dart';
 import 'package:music_app/utils/size_config.dart';
 import 'package:provider/provider.dart';
@@ -51,8 +49,8 @@ class Common {
         imageUrl: type == "albums" || type == "music"
             ? Common.returnAlbumImgUrl(id)
             : "https://api.napster.com/imageserver/v2/artists/$id/images/230x153.jpg",
-        placeholder: (context, url) =>  Common().circularProgressIndicator(context),
-
+        placeholder: (context, url) =>
+            Common().circularProgressIndicator(context),
         errorWidget: (context, url, error) => Container(
           height: 300,
           width: 300,
@@ -89,25 +87,29 @@ class Common {
     );
   }
 
-  Center circularProgressIndicator(BuildContext context){
-    return  Center(child: CircularProgressIndicator(color: Theme.of(context).secondaryHeaderColor,),);
+  Center circularProgressIndicator(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(
+        color: Theme.of(context).secondaryHeaderColor,
+      ),
+    );
   }
 
   Center loadingIndicator(BuildContext context) {
     return Center(
-      child: SpinKitWave(
-        color: Theme.of(context).secondaryHeaderColor,
-        size: 50.0,)
-    );
+        child: SpinKitWave(
+      color: Theme.of(context).secondaryHeaderColor,
+      size: 50.0,
+    ));
   }
 
- static InkWell mainTile(BuildContext context,
-      String trackId, String id, String name, String type) {
+  static InkWell mainTile(BuildContext context, String trackId, String id,
+      String name, String type) {
     return InkWell(
       onTap: () {
         if (type == "albums") {
           context.read<AlbumProvider>().getAlbumTracks(id);
-          normalNavigate(context, AlbumDetail());
+          normalNavigate(context, AlbumDetailPage());
         } else if (type == "music") {
           context.read<MusicProvider>().getTrackDetail(trackId);
           normalNavigate(context, const MusicPlayer());

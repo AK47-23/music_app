@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:music_app/album/model/album_model.dart';
 import 'package:music_app/artist/model/artist_model.dart';
@@ -17,11 +15,10 @@ class ArtistProvider extends ChangeNotifier {
     isArtistLoading = true;
     artistModel = await _artistRepo.getArtistDetail(id);
 
-    if(artistModel.name!=''){
+    if (artistModel.name != '') {
       getTopList(id);
       getNewList(id);
     }
-
   }
 
   void getTopList(String id) async {

@@ -2,13 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:music_app/album/model/album_model.dart';
-import 'package:music_app/album/provider/album_provider.dart';
-import 'package:music_app/album/ui/album_detail_page.dart';
 import 'package:music_app/artist/model/artist_model.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
 import 'package:music_app/utils/common.dart';
 import 'package:music_app/utils/cs_text_style.dart';
-import 'package:music_app/utils/navigate.dart';
 import 'package:music_app/utils/size_config.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';

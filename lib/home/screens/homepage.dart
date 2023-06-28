@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:glassmorphism/glassmorphism.dart';
-import 'package:music_app/album/provider/album_provider.dart';
-import 'package:music_app/album/ui/album_detail_page.dart';
 import 'package:music_app/album/model/album_model.dart';
 import 'package:music_app/artist/model/artist_model.dart';
-import 'package:music_app/artist/provider/artist_provider.dart';
-import 'package:music_app/artist/ui/artist_detail.dart';
 import 'package:music_app/music/model/track_model.dart';
 import 'package:music_app/home/provider/home_provider.dart';
-import 'package:music_app/music/provider/music_provider.dart';
-import 'package:music_app/music/ui/music_player.dart';
 import 'package:music_app/utils/common.dart';
 import 'package:music_app/utils/cs_text_style.dart';
-import 'package:music_app/utils/navigate.dart';
 import 'package:music_app/utils/size_config.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -141,12 +133,8 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) {
               if (index < albumList.length) {
                 AlbumModel albumModel = albumList[index];
-                return Common.mainTile(
-                    context,
-                    albumModel.albumId!,
-                    albumModel.albumId!,
-                    albumModel.albumName!,
-                    "albums");
+                return Common.mainTile(context, albumModel.albumId!,
+                    albumModel.albumId!, albumModel.albumName!, "albums");
               } else {
                 return Container(
                   alignment: Alignment.center,
