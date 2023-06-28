@@ -4,8 +4,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:glassmorphism/glassmorphism.dart';
+import 'package:music_app/album/provider/album_provider.dart';
+import 'package:music_app/album/ui/album_detail_page.dart';
+import 'package:music_app/artist/provider/artist_provider.dart';
+import 'package:music_app/artist/ui/artist_detail.dart';
 import 'package:music_app/utils/cs_text_style.dart';
 import 'package:music_app/utils/size_config.dart';
+import 'package:provider/provider.dart';
+
+import '../music/provider/music_provider.dart';
+import '../music/ui/music_player.dart';
+import 'navigate.dart';
 
 class Common {
   static const baseUrl =
@@ -39,7 +48,7 @@ class Common {
         height: SizeConfig.screenHeight * heightFactor,
         width: SizeConfig.screenHeight * widthFactor,
         fit: BoxFit.cover,
-        imageUrl: type == "albums"
+        imageUrl: type == "albums" || type == "music"
             ? Common.returnAlbumImgUrl(id)
             : "https://api.napster.com/imageserver/v2/artists/$id/images/230x153.jpg",
         placeholder: (context, url) =>  Common().circularProgressIndicator(context),
@@ -89,6 +98,55 @@ class Common {
       child: SpinKitWave(
         color: Theme.of(context).secondaryHeaderColor,
         size: 50.0,)
+    );
+  }
+
+ static InkWell mainTile(BuildContext context,
+      String trackId, String id, String name, String type) {
+    return InkWell(
+      onTap: () {
+        if (type == "albums") {
+          context.read<AlbumProvider>().getAlbumTracks(id);
+          normalNavigate(context, AlbumDetail());
+        } else if (type == "music") {
+          context.read<MusicProvider>().getTrackDetail(trackId);
+          normalNavigate(context, const MusicPlayer());
+        } else {
+          context.read<ArtistProvider>().getArtistDetail(id);
+          normalNavigate(context, const ArtistDetailPage());
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+        width: SizeConfig.screenWidth * .42,
+        child: Stack(
+          children: [
+            Common().makeImageResource(id, type, .25, .4),
+            Positioned(
+              bottom: 0,
+              child: GlassmorphicContainer(
+                width: SizeConfig.screenWidth * .4,
+                height: SizeConfig.screenHeight * .05,
+                borderRadius: 0,
+                linearGradient: Common().gradientColors,
+                border: 0,
+                blur: 5,
+                borderGradient: Common().gradientColors,
+                child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    alignment: Alignment.center,
+                    width: SizeConfig.screenWidth * .35,
+                    child: Text(
+                      name,
+                      style: normalText1,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    )),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

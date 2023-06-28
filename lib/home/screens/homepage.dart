@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:music_app/album/provider/album_provider.dart';
-import 'package:music_app/album/ui/album_detail.dart';
+import 'package:music_app/album/ui/album_detail_page.dart';
 import 'package:music_app/album/model/album_model.dart';
 import 'package:music_app/artist/model/artist_model.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
@@ -107,71 +107,26 @@ class _HomePageState extends State<HomePage> {
   Widget buildTopTrackList() {
     return Consumer<HomeProvider>(builder: (context, value, widget) {
       List<TrackModel> trackList = value.tracksList;
-      return
+      return SizedBox(
+          height: SizeConfig.screenHeight * .25,
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              controller: trackScroll,
+              itemCount: trackList.length + 1,
+              itemBuilder: (context, index) {
+                if (index < trackList.length) {
+                  TrackModel trackModel = trackList[index];
+                  return Common.mainTile(context, trackModel.id!,
+                      trackModel.albumId!, trackModel.name!, "music");
+                } else {
+                  return Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: const CircularProgressIndicator(),
+                  );
+                }
+              }));
     });
-  }
-
-  SizedBox tile(ScrollController scrollController,int listLength,String id,String name,String type){
-    return SizedBox(
-      height: SizeConfig.screenHeight * .25,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          controller: scrollController,
-          itemCount: listLength + 1,
-          itemBuilder: (context, index) {
-            if (index < listLength) {
-              return InkWell(
-                onTap: () {
-                  if(type=="albums")
-                  context
-                      .read<MusicProvider>()
-                      .getTrackDetail(id);
-                  normalNavigate(context, const MusicPlayer());
-                },
-                child: Container(
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                  width: SizeConfig.screenWidth * .42,
-                  child: Stack(
-                    children: [
-                      Common().makeImageResource(
-                          trackModel.albumId!, "albums", .25, .4),
-                      Positioned(
-                        bottom: 0,
-                        child: GlassmorphicContainer(
-                          width: SizeConfig.screenWidth * .4,
-                          height: SizeConfig.screenHeight * .05,
-                          borderRadius: 0,
-                          linearGradient: Common().gradientColors,
-                          border: 0,
-                          blur: 5,
-                          borderGradient: Common().gradientColors,
-                          child: Container(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 5),
-                              alignment: Alignment.center,
-                              width: SizeConfig.screenWidth * .35,
-                              child: Text(
-                                trackModel.name!,
-                                style: normalText1,
-                                softWrap: true,
-                                overflow: TextOverflow.ellipsis,
-                              )),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              );
-            } else {
-              return Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: const CircularProgressIndicator(),
-              );
-            }
-          }),
-    );
   }
 
   Widget buildTopAlbumList() {
@@ -186,29 +141,12 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) {
               if (index < albumList.length) {
                 AlbumModel albumModel = albumList[index];
-                return InkWell(
-                  onTap: () {
-                    context
-                        .read<AlbumProvider>()
-                        .getAlbumTracks(albumModel.albumId!);
-                    normalNavigate(context, AlbumDetail());
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                    width: SizeConfig.screenWidth * .4,
-                    child: Stack(
-                      children: [
-                        Common().makeImageResource(
-                            albumModel.albumId!, "albums", .25, .4),
-                        Positioned(
-                            bottom: 0,
-                            child: Common().glassmorphicContainer(
-                                albumModel.albumName!, .4, .05))
-                      ],
-                    ),
-                  ),
-                );
+                return Common.mainTile(
+                    context,
+                    albumModel.albumId!,
+                    albumModel.albumId!,
+                    albumModel.albumName!,
+                    "albums");
               } else {
                 return Container(
                   alignment: Alignment.center,
@@ -233,29 +171,8 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) {
               if (index < artistList.length) {
                 ArtistModel artistModel = artistList[index];
-                return InkWell(
-                  onTap: () {
-                    context
-                        .read<ArtistProvider>()
-                        .getArtistDetail(artistModel.id!);
-                    normalNavigate(context, const ArtistDetailPage());
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                    width: SizeConfig.screenWidth * .4,
-                    child: Stack(
-                      children: [
-                        Common().makeImageResource(
-                            artistModel.id!, "artists", .25, .4),
-                        Positioned(
-                            bottom: 0,
-                            child: Common().glassmorphicContainer(
-                                artistModel.name!, .4, .05))
-                      ],
-                    ),
-                  ),
-                );
+                return Common.mainTile(context, artistModel.id!,
+                    artistModel.id!, artistModel.name!, "artists");
               } else {
                 return Container(
                   alignment: Alignment.center,

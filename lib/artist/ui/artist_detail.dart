@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:music_app/album/model/album_model.dart';
 import 'package:music_app/album/provider/album_provider.dart';
-import 'package:music_app/album/ui/album_detail.dart';
+import 'package:music_app/album/ui/album_detail_page.dart';
 import 'package:music_app/artist/model/artist_model.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
 import 'package:music_app/utils/common.dart';
@@ -39,8 +39,8 @@ class ArtistDetailPage extends StatelessWidget {
                     SizedBox(
                       height: SizeConfig.screenHeight * .02,
                     ),
-                    Common().makeImageResource(
-                        artistModel.id!, "artists", .3, .25),
+                    Common()
+                        .makeImageResource(artistModel.id!, "artists", .3, .25),
                     SizedBox(
                       height: SizeConfig.screenHeight * .03,
                     ),
@@ -49,26 +49,31 @@ class ArtistDetailPage extends StatelessWidget {
                       style: titleText1,
                       textAlign: TextAlign.center,
                     ),
-
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: ReadMoreText(artistModel.bio!,trimLines: 3,
+                      child: ReadMoreText(
+                        artistModel.bio!,
+                        trimLines: 3,
                         style: subTitle1,
                         colorClickableText: Colors.pink,
                         trimMode: TrimMode.Line,
                         trimCollapsedText: 'Show more',
                         trimExpandedText: 'Show less',
-                        moreStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold,color: Colors.blueAccent),),
+                        moreStyle: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueAccent),
+                      ),
                     ),
                     SizedBox(
                       height: SizeConfig.screenHeight * .02,
                     ),
                     Container(
                       padding: const EdgeInsets.only(
-                          top: 26,bottom:10, right:0,left: 15),
+                          top: 26, bottom: 10, right: 0, left: 15),
                       width: SizeConfig.screenWidth,
-                      decoration:  BoxDecoration(
-                          borderRadius:const BorderRadius.only(
+                      decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(42),
                             topRight: Radius.circular(42),
                           ),
@@ -78,7 +83,9 @@ class ArtistDetailPage extends StatelessWidget {
                         children: [
                           buildCategoryTitle('TOP'),
                           buildCustomAlbumList(value.topList),
-                          SizedBox(height: SizeConfig.screenHeight*.02,),
+                          SizedBox(
+                            height: SizeConfig.screenHeight * .02,
+                          ),
                           buildCategoryTitle('NEW'),
                           buildCustomAlbumList(value.newList),
                         ],
@@ -106,28 +113,8 @@ class ArtistDetailPage extends StatelessWidget {
           itemCount: albumList.length,
           itemBuilder: (context, index) {
             AlbumModel albumModel = albumList[index];
-            return InkWell(
-              onTap: () {
-                context
-                    .read<AlbumProvider>()
-                    .getAlbumTracks(albumModel.albumId!);
-                normalNavigate(context, AlbumDetail());
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                width: SizeConfig.screenWidth * .4,
-                child: Stack(
-                  children: [
-                    Common().makeImageResource(
-                        albumModel.albumId!, "albums", .25, .4),
-                    Positioned(
-                        bottom: 0,
-                        child: Common().glassmorphicContainer(
-                            albumModel.albumName!, .4, .05))
-                  ],
-                ),
-              ),
-            );
+            return Common.mainTile(context, albumModel.albumId!,
+                albumModel.albumId!, albumModel.albumName!, "albums");
           }),
     );
   }

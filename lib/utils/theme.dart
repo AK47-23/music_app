@@ -7,6 +7,7 @@ class MyTheme{
           iconTheme:const  IconThemeData(color: Colors.black),
           colorScheme:const ColorScheme.light(),
      primaryColor: Colors.white,
+       secondaryHeaderColor: Colors.black87
 
    );
 

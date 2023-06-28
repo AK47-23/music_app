@@ -4,7 +4,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/album/provider/album_provider.dart';
-import 'package:music_app/album/ui/album_detail.dart';
+import 'package:music_app/album/ui/album_detail_page.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
 import 'package:music_app/artist/ui/artist_detail.dart';
 import 'package:music_app/music/model/track_model.dart';
