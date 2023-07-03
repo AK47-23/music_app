@@ -4,6 +4,7 @@ import 'package:music_app/album/provider/album_provider.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
 import 'package:music_app/home/screens/homepage.dart';
 import 'package:music_app/music/provider/music_provider.dart';
+import 'package:music_app/utils/scroll_behaviour.dart';
 import 'package:music_app/utils/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -40,15 +41,12 @@ class MyApp extends StatelessWidget {
         ],
         child: Builder(builder: (context) {
           return MaterialApp(
-            title: 'Music App',
+            scrollBehavior: MyCustomScrollBehavior(),
+            title: 'Rhythm',
             debugShowCheckedModeBanner: false,
             themeMode: ThemeMode.system,
             darkTheme: MyTheme.darkTheme,
             theme: MyTheme.lightTheme,
-            // theme: ThemeData(
-            //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
-            //   useMaterial3: true,
-            // ),
             home: const HomePage(),
           );
         }),

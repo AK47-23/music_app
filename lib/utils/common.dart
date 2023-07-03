@@ -9,6 +9,7 @@ import 'package:music_app/artist/ui/artist_detail_page.dart';
 import 'package:music_app/utils/cs_text_style.dart';
 import 'package:music_app/utils/size_config.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 import '../music/provider/music_provider.dart';
 import '../music/ui/music_player.dart';
@@ -24,10 +25,10 @@ class Common {
     return "https://api.napster.com/imageserver/v2/albums/$id/images/500x500.jpg";
   }
 
-  LinearGradient gradientColors =
-      const LinearGradient(colors: [Colors.white38, Colors.white38]);
+ static const LinearGradient gradientColors =
+      LinearGradient(colors: [Colors.white38, Colors.white38]);
 
-  AppBar makeAppbar(String title) {
+  static AppBar makeAppbar(String title) {
     return AppBar(
       title: Text(
         title,
@@ -38,7 +39,7 @@ class Common {
     );
   }
 
-  ClipRRect makeImageResource(
+  static ClipRRect makeImageResource(
       String id, String type, double heightFactor, double widthFactor) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
@@ -47,10 +48,10 @@ class Common {
         width: SizeConfig.screenHeight * widthFactor,
         fit: BoxFit.cover,
         imageUrl: type == "albums" || type == "music"
-            ? Common.returnAlbumImgUrl(id)
+            ?  returnAlbumImgUrl(id)
             : "https://api.napster.com/imageserver/v2/artists/$id/images/230x153.jpg",
         placeholder: (context, url) =>
-            Common().circularProgressIndicator(context),
+            shimmerWidget(heightFactor,widthFactor),
         errorWidget: (context, url, error) => Container(
           height: 300,
           width: 300,
@@ -64,30 +65,7 @@ class Common {
     );
   }
 
-  GlassmorphicContainer glassmorphicContainer(
-      String title, double widthFactor, double heightFactor) {
-    return GlassmorphicContainer(
-      width: SizeConfig.screenWidth * widthFactor,
-      height: SizeConfig.screenHeight * heightFactor,
-      borderRadius: 0,
-      linearGradient: gradientColors,
-      border: 0,
-      blur: 5,
-      borderGradient: gradientColors,
-      child: Container(
-          padding: const EdgeInsets.only(left: 5),
-          alignment: Alignment.center,
-          width: SizeConfig.screenWidth * .35,
-          child: Text(
-            title,
-            style: normalText1,
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
-          )),
-    );
-  }
-
-  Center circularProgressIndicator(BuildContext context) {
+  static Center circularProgressIndicator(BuildContext context) {
     return Center(
       child: CircularProgressIndicator(
         color: Theme.of(context).secondaryHeaderColor,
@@ -95,7 +73,7 @@ class Common {
     );
   }
 
-  Center loadingIndicator(BuildContext context) {
+  static  Center loadingIndicator(BuildContext context) {
     return Center(
         child: SpinKitWave(
       color: Theme.of(context).secondaryHeaderColor,
@@ -123,18 +101,20 @@ class Common {
         width: SizeConfig.screenWidth * .42,
         child: Stack(
           children: [
-            Common().makeImageResource(id, type, .25, .4),
+            Common.makeImageResource(id, type, .25, .4),
             Positioned(
               bottom: 0,
               child: GlassmorphicContainer(
+
                 width: SizeConfig.screenWidth * .4,
                 height: SizeConfig.screenHeight * .05,
                 borderRadius: 0,
-                linearGradient: Common().gradientColors,
+                linearGradient: gradientColors,
                 border: 0,
                 blur: 5,
-                borderGradient: Common().gradientColors,
+                borderGradient: gradientColors,
                 child: Container(
+
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     alignment: Alignment.center,
                     width: SizeConfig.screenWidth * .35,
@@ -148,6 +128,18 @@ class Common {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  static Shimmer shimmerWidget(double heightFactor, double widthFactor){
+    return Shimmer(
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.grey.shade200),
+        width: SizeConfig.screenWidth * widthFactor,
+        height: SizeConfig.screenHeight * heightFactor,
       ),
     );
   }

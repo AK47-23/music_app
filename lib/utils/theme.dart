@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyTheme{
    static final lightTheme= ThemeData(
       scaffoldBackgroundColor: Colors.grey.shade100,
-          appBarTheme: AppBarTheme(backgroundColor: Colors.grey.shade100,iconTheme:const IconThemeData(color: Colors.black)),
+          appBarTheme: AppBarTheme(backgroundColor: Colors.grey.shade100,iconTheme:const IconThemeData(color: Colors.black),titleTextStyle:const TextStyle(color: Colors.black87)),
           iconTheme:const  IconThemeData(color: Colors.black),
           colorScheme:const ColorScheme.light(),
      primaryColor: Colors.white,

@@ -16,14 +16,14 @@ class ArtistDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Common().makeAppbar('ARTIST DETAIL'),
+      appBar: Common.makeAppbar('ARTIST DETAIL'),
       body: makeBody(context),
     );
   }
 
   makeBody(BuildContext context) {
     return context.watch<ArtistProvider>().isArtistLoading
-        ? Common().loadingIndicator(context)
+        ? Common.loadingIndicator(context)
         : SingleChildScrollView(
             child: Consumer<ArtistProvider>(builder: (context, value, widget) {
               ArtistModel artistModel = value.artistModel;
@@ -36,7 +36,7 @@ class ArtistDetailPage extends StatelessWidget {
                     SizedBox(
                       height: SizeConfig.screenHeight * .02,
                     ),
-                    Common()
+                    Common
                         .makeImageResource(artistModel.id!, "artists", .3, .25),
                     SizedBox(
                       height: SizeConfig.screenHeight * .03,

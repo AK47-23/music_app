@@ -83,14 +83,14 @@ class _MusicPlayerState extends State<MusicPlayer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Common().makeAppbar('NOW PLAYING'),
+      appBar: Common.makeAppbar('NOW PLAYING'),
       body: makeBody(context),
     );
   }
 
   Widget makeBody(BuildContext context) {
     return context.watch<MusicProvider>().isLoading
-        ? Common().loadingIndicator(context)
+        ? Common.loadingIndicator(context)
         : SingleChildScrollView(
             child: Column(
               children: [
@@ -113,7 +113,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                           },
                           child: Center(
                             child: trackModel.albumId != ''
-                                ? Common().makeImageResource(
+                                ? Common.makeImageResource(
                                     trackModel.albumId!, "albums", .35, .3)
                                 : Container(
                                     width: 65.sp,

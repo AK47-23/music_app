@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
       child: context.watch<HomeProvider>().isAlbumLoading &&
               context.watch<HomeProvider>().isTrackLoading &&
               context.read<HomeProvider>().isArtistLoading
-          ? Common().loadingIndicator(context)
+          ? Common.loadingIndicator(context)
           : SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(left: 7.0, top: 15),
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Center(
                       child: Text(
-                        'ECHO',
+                        'RHYTHM',
                         style: titleText1,
                       ),
                     ),
@@ -163,9 +163,8 @@ class _HomePageState extends State<HomePage> {
                     artistModel.id!, artistModel.name!, "artists");
               } else {
                 return Container(
-                  alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: const CircularProgressIndicator(),
+                  child: Common.circularProgressIndicator(context),
                 );
               }
             }),

@@ -21,14 +21,14 @@ class AlbumDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Common().makeAppbar('ALBUM DETAIL'),
+      appBar: Common.makeAppbar('ALBUM DETAIL'),
       body: makeBody(context),
     );
   }
 
   makeBody(BuildContext context) {
     return context.watch<AlbumProvider>().isLoading
-        ? Common().loadingIndicator(context)
+        ? Common.loadingIndicator(context)
         : Consumer<AlbumProvider>(builder: (context, value, widget) {
             List<TrackModel> tracksList = value.tracksList;
             return tracksList.isNotEmpty
@@ -38,7 +38,7 @@ class AlbumDetailPage extends StatelessWidget {
                         SizedBox(
                           height: SizeConfig.screenHeight * .01,
                         ),
-                        Common().makeImageResource(
+                        Common.makeImageResource(
                             tracksList[0].albumId!, "albums", .3, .25),
                         Text(
                           tracksList[0].albumName!,
