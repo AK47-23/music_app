@@ -5,6 +5,7 @@ import 'package:music_app/music/model/track_model.dart';
 import 'package:music_app/home/provider/home_provider.dart';
 import 'package:music_app/utils/common.dart';
 import 'package:music_app/utils/cs_text_style.dart';
+import 'package:music_app/utils/fonts.dart';
 import 'package:music_app/utils/size_config.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -21,9 +22,9 @@ class _HomePageState extends State<HomePage> {
   ScrollController albumScroll = ScrollController();
   ScrollController artistScroll = ScrollController();
 
-  int trackIndex = 5;
-  int albumIndex = 5;
-  int artistIndex = 5;
+  int trackIndex = 8;
+  int albumIndex = 8;
+  int artistIndex = 8;
 
   @override
   void initState() {
@@ -46,6 +47,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget makeBody(BuildContext context) {
     SizeConfig().init(context);
+    Fonts().init(context);
     return SafeArea(
       child: context.watch<HomeProvider>().isAlbumLoading &&
               context.watch<HomeProvider>().isTrackLoading &&
@@ -97,7 +99,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildTopTrackList() {
-    return Consumer<HomeProvider>(builder: (context, value, widget) {
+    return Consumer<HomeProvider>(
+        builder: (context, value, widget) {
+
       List<TrackModel> trackList = value.tracksList;
       return SizedBox(
           height: SizeConfig.screenHeight * .25,
@@ -114,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                   return Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: const CircularProgressIndicator(),
+                    child: Common.circularProgressIndicator(context),
                   );
                 }
               }));
@@ -139,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                 return Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: const CircularProgressIndicator(),
+                  child: Common.circularProgressIndicator(context),
                 );
               }
             }),
@@ -164,7 +168,7 @@ class _HomePageState extends State<HomePage> {
               } else {
                 return Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Common.circularProgressIndicator(context),
+                    child: Common.circularProgressIndicator(context),
                 );
               }
             }),

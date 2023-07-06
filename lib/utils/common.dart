@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -25,7 +27,7 @@ class Common {
     return "https://api.napster.com/imageserver/v2/albums/$id/images/500x500.jpg";
   }
 
- static const LinearGradient gradientColors =
+  static const LinearGradient gradientColors =
       LinearGradient(colors: [Colors.white38, Colors.white38]);
 
   static AppBar makeAppbar(String title) {
@@ -48,10 +50,9 @@ class Common {
         width: SizeConfig.screenHeight * widthFactor,
         fit: BoxFit.cover,
         imageUrl: type == "albums" || type == "music"
-            ?  returnAlbumImgUrl(id)
+            ? returnAlbumImgUrl(id)
             : "https://api.napster.com/imageserver/v2/artists/$id/images/230x153.jpg",
-        placeholder: (context, url) =>
-            shimmerWidget(heightFactor,widthFactor),
+        placeholder: (context, url) => shimmerWidget(heightFactor, widthFactor),
         errorWidget: (context, url, error) => Container(
           height: 300,
           width: 300,
@@ -68,12 +69,11 @@ class Common {
   static Center circularProgressIndicator(BuildContext context) {
     return Center(
       child: CircularProgressIndicator(
-        color: Theme.of(context).secondaryHeaderColor,
       ),
     );
   }
 
-  static  Center loadingIndicator(BuildContext context) {
+  static Center loadingIndicator(BuildContext context) {
     return Center(
         child: SpinKitWave(
       color: Theme.of(context).secondaryHeaderColor,
@@ -83,6 +83,7 @@ class Common {
 
   static InkWell mainTile(BuildContext context, String trackId, String id,
       String name, String type) {
+    bool isMobile = SizeConfig.screenWidth < 1000;
     return InkWell(
       onTap: () {
         if (type == "albums") {
@@ -98,15 +99,18 @@ class Common {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-        width: SizeConfig.screenWidth * .42,
+        width: isMobile
+            ? SizeConfig.screenWidth * .42
+            : SizeConfig.screenWidth * .15,
         child: Stack(
           children: [
             Common.makeImageResource(id, type, .25, .4),
             Positioned(
               bottom: 0,
               child: GlassmorphicContainer(
-
-                width: SizeConfig.screenWidth * .4,
+                width: isMobile
+                    ? SizeConfig.screenWidth * .42
+                    : SizeConfig.screenWidth * .18,
                 height: SizeConfig.screenHeight * .05,
                 borderRadius: 0,
                 linearGradient: gradientColors,
@@ -114,10 +118,10 @@ class Common {
                 blur: 5,
                 borderGradient: gradientColors,
                 child: Container(
-
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     alignment: Alignment.center,
-                    width: SizeConfig.screenWidth * .35,
+                    width: isMobile
+                        ? SizeConfig.screenWidth * .35:SizeConfig.screenWidth*.12,
                     child: Text(
                       name,
                       style: normalText1,
@@ -132,7 +136,7 @@ class Common {
     );
   }
 
-  static Shimmer shimmerWidget(double heightFactor, double widthFactor){
+  static Shimmer shimmerWidget(double heightFactor, double widthFactor) {
     return Shimmer(
       child: Container(
         decoration: BoxDecoration(
