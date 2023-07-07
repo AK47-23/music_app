@@ -9,6 +9,7 @@ import 'package:music_app/album/ui/album_detail_page.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
 import 'package:music_app/artist/ui/artist_detail_page.dart';
 import 'package:music_app/utils/cs_text_style.dart';
+import 'package:music_app/utils/fonts.dart';
 import 'package:music_app/utils/size_config.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
