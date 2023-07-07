@@ -1,18 +1,23 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:glassmorphism/glassmorphism.dart';
+import 'package:intl/intl.dart';
 import 'package:music_app/album/provider/album_provider.dart';
-import 'package:music_app/album/ui/album_detail_page.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
-import 'package:music_app/artist/ui/artist_detail_page.dart';
+import 'package:music_app/artist/ui/artist_detail_layout.dart';
+import 'package:music_app/artist/ui/artist_detail_mobile.dart';
 import 'package:music_app/utils/cs_text_style.dart';
 import 'package:music_app/utils/size_config.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
+import '../album/ui/album_detail_layout.dart';
 import '../music/provider/music_provider.dart';
 import '../music/ui/music_player.dart';
 import 'navigate.dart';
@@ -30,14 +35,23 @@ class Common {
   static const LinearGradient gradientColors =
       LinearGradient(colors: [Colors.white38, Colors.white38]);
 
-  static AppBar makeAppbar(String title) {
-    return AppBar(
-      title: Text(
-        title,
-        style: normalText1,
+  static Padding makeCustomAppbar(String title, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14),
+      child: Row(
+        children: [
+          IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: const Icon(Icons.arrow_back_ios_new_sharp)),
+          SizedBox(
+            width: SizeConfig.screenWidth * .3,
+          ),
+          Text(
+            title,
+            style: normalText1,
+          ),
+        ],
       ),
-      centerTitle: true,
-      elevation: 0,
     );
   }
 
@@ -67,9 +81,8 @@ class Common {
   }
 
   static Center circularProgressIndicator(BuildContext context) {
-    return Center(
-      child: CircularProgressIndicator(
-      ),
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 
@@ -88,13 +101,13 @@ class Common {
       onTap: () {
         if (type == "albums") {
           context.read<AlbumProvider>().getAlbumTracks(id);
-          normalNavigate(context, AlbumDetailPage());
+          normalNavigate(context, const AlbumDetailLayout());
         } else if (type == "music") {
           context.read<MusicProvider>().getTrackDetail(trackId);
           normalNavigate(context, const MusicPlayer());
         } else {
           context.read<ArtistProvider>().getArtistDetail(id);
-          normalNavigate(context, const ArtistDetailPage());
+          normalNavigate(context, const ArtistDetailLayout());
         }
       },
       child: Container(
@@ -121,7 +134,8 @@ class Common {
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     alignment: Alignment.center,
                     width: isMobile
-                        ? SizeConfig.screenWidth * .35:SizeConfig.screenWidth*.12,
+                        ? SizeConfig.screenWidth * .35
+                        : SizeConfig.screenWidth * .12,
                     child: Text(
                       name,
                       style: normalText1,
@@ -145,6 +159,108 @@ class Common {
         width: SizeConfig.screenWidth * widthFactor,
         height: SizeConfig.screenHeight * heightFactor,
       ),
+    );
+  }
+
+  static Future<PaletteColor> updatePalette(String id, bool isAlbum) async {
+    PaletteColor colors;
+    final PaletteGenerator generator = await PaletteGenerator.fromImageProvider(
+        Image.network(isAlbum ? Common.returnAlbumImgUrl(id) : id).image);
+
+    colors =
+        generator.lightMutedColor ?? PaletteColor(const Color(0xffffe5b4), 2);
+    return colors;
+  }
+
+  static webHeader(BuildContext context, String id, String title, String type,
+      String subTitle) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+            padding: const EdgeInsets.fromLTRB(28, 20, 0, 25),
+            child: IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: const Icon(Icons.arrow_back_ios_sharp))),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+          width: SizeConfig.screenWidth,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Common.makeImageResource(id, type, .4, .35),
+              SizedBox(
+                width: SizeConfig.screenWidth * .01,
+              ),
+              SizedBox(
+                height: SizeConfig.screenHeight * .4,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: SizeConfig.screenWidth * .5,
+                        height: SizeConfig.screenHeight * .3,
+                        child: Text(
+                          title,
+                          style: titleTextWeb,
+                          overflow: TextOverflow.clip,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.sp,
+                      ),
+                      InkWell(
+                        onTap: type == "albums"
+                            ? () {
+                                context
+                                    .read<ArtistProvider>()
+                                    .getArtistDetail(id);
+                                normalNavigate(
+                                  context,
+                                  const ArtistDetailLayout(),
+                                );
+                              }
+                            : null,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            type == "albums"
+                                ? Container(
+                                    padding: const EdgeInsets.all(6),
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.black,
+                                    ),
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 15.sp,
+                                    ),
+                                  )
+                                : const SizedBox(),
+                            SizedBox(width: 15.sp),
+                            SizedBox(
+                              width: SizeConfig.screenWidth * .46,
+                              child: Text(
+                                subTitle,
+                                overflow: TextOverflow.clip,
+                                style: normalText1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 20.sp,
+        ),
+      ],
     );
   }
 }

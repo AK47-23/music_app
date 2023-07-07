@@ -4,9 +4,9 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/album/provider/album_provider.dart';
-import 'package:music_app/album/ui/album_detail_page.dart';
+import 'package:music_app/album/ui/album_detail_mobile.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
-import 'package:music_app/artist/ui/artist_detail_page.dart';
+import 'package:music_app/artist/ui/artist_detail_mobile.dart';
 import 'package:music_app/music/model/track_model.dart';
 import 'package:music_app/music/provider/music_provider.dart';
 import 'package:music_app/utils/common.dart';
@@ -83,7 +83,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Common.makeAppbar('NOW PLAYING'),
       body: makeBody(context),
     );
   }
@@ -104,12 +103,13 @@ class _MusicPlayerState extends State<MusicPlayer> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(height: SizeConfig.screenHeight * .05),
+                        Common.makeCustomAppbar('NOW PLAYING', context),
                         InkWell(
                           onTap: () {
                             context
                                 .read<AlbumProvider>()
                                 .getAlbumTracks(trackModel.albumId!);
-                            normalNavigate(context, AlbumDetailPage());
+                            normalNavigate(context, AlbumDetailMobile());
                           },
                           child: Center(
                             child: trackModel.albumId != ''
@@ -146,7 +146,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                               context
                                   .read<ArtistProvider>()
                                   .getArtistDetail(trackModel.artistId!);
-                              normalNavigate(context, const ArtistDetailPage());
+                              normalNavigate(context, const ArtistDetailMobile());
                             },
                             child:
                                 Text(trackModel.artistName!, style: subTitle1)),

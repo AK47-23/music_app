@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget makeBody(BuildContext context) {
     SizeConfig().init(context);
-    Fonts().init(context);
+    // Fonts().init(context);
     return SafeArea(
       child: context.watch<HomeProvider>().isAlbumLoading &&
               context.watch<HomeProvider>().isTrackLoading &&
