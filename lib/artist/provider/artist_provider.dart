@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:music_app/album/model/album_model.dart';
 import 'package:music_app/artist/model/artist_model.dart';
 import 'package:music_app/artist/repository/artist_repo.dart';
+import 'package:palette_generator/palette_generator.dart';
+
+import '../../utils/common.dart';
 
 class ArtistProvider extends ChangeNotifier {
   final ArtistRepo _artistRepo = ArtistRepo();
@@ -11,9 +14,12 @@ class ArtistProvider extends ChangeNotifier {
   List<AlbumModel> topList = [];
   List<AlbumModel> newList = [];
 
+  PaletteColor colors= PaletteColor(const Color(0xffffe5b4), 2);
+
   void getArtistDetail(String id) async {
     isArtistLoading = true;
     artistModel = await _artistRepo.getArtistDetail(id);
+    colors = await Common.updatePalette("https://api.napster.com/imageserver/v2/artists/$id/images/230x153.jpg",false);
 
     if (artistModel.name != '') {
       getTopList(id);

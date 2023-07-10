@@ -7,7 +7,6 @@ import 'package:music_app/music/model/track_model.dart';
 import 'package:music_app/home/provider/home_provider.dart';
 import 'package:music_app/utils/common.dart';
 import 'package:music_app/utils/cs_text_style.dart';
-import 'package:music_app/utils/fonts.dart';
 import 'package:music_app/utils/size_config.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -49,7 +48,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget makeBody(BuildContext context) {
     SizeConfig().init(context);
-    Fonts().init(context);
+    // Fonts().init(context);
     return SafeArea(
       child: context.watch<HomeProvider>().isAlbumLoading &&
               context.watch<HomeProvider>().isTrackLoading &&

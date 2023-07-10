@@ -31,7 +31,7 @@ class ArtistRepo {
     List<AlbumModel> albumList = [];
 
     String albumUrl =
-        "${Common.baseUrl}/artists/$id/albums/top?apikey=${Common.apiKey}&limit=5?";
+        "${Common.baseUrl}/artists/$id/albums/top?apikey=${Common.apiKey}&limit=8?";
 
     try {
       var response = await Dio().get(albumUrl);
@@ -50,7 +50,7 @@ class ArtistRepo {
     List<AlbumModel> albumList = [];
 
     String albumUrl =
-        "${Common.baseUrl}/artists/$id/albums/new?apikey=${Common.apiKey}&limit=5?";
+        "${Common.baseUrl}/artists/$id/albums/new?apikey=${Common.apiKey}&limit=8?";
 
     try {
       var response = await Dio().get(albumUrl);
