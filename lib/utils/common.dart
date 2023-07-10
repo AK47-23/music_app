@@ -1,15 +1,11 @@
-import 'dart:developer';
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:glassmorphism/glassmorphism.dart';
-import 'package:intl/intl.dart';
 import 'package:music_app/album/provider/album_provider.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
 import 'package:music_app/artist/ui/artist_detail_layout.dart';
-import 'package:music_app/artist/ui/artist_detail_mobile.dart';
+import 'package:music_app/music/ui/checkweb.dart';
 import 'package:music_app/utils/cs_text_style.dart';
 import 'package:music_app/utils/size_config.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -19,7 +15,6 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 
 import '../album/ui/album_detail_layout.dart';
 import '../music/provider/music_provider.dart';
-import '../music/ui/music_player.dart';
 import 'navigate.dart';
 
 class Common {
@@ -37,18 +32,31 @@ class Common {
 
   static Padding makeCustomAppbar(String title, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          IconButton(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.arrow_back_ios_new_sharp)),
-          SizedBox(
-            width: SizeConfig.screenWidth * .3,
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(Icons.arrow_back_ios_new_sharp)),
+            ),
           ),
-          Text(
-            title,
-            style: normalText1,
+
+          Expanded(
+            flex: 2,
+            child: Container(
+              padding: const EdgeInsets.only(left: 30),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                title,
+                style: normalText1,
+                textAlign: TextAlign.center,
+              ),
+            ),
           ),
         ],
       ),
@@ -57,7 +65,7 @@ class Common {
 
   static ClipRRect makeImageResource(
       String id, String type, double heightFactor, double widthFactor) {
-    return ClipRRect(
+    return  ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: CachedNetworkImage(
         height: SizeConfig.screenHeight * heightFactor,
@@ -104,7 +112,7 @@ class Common {
           normalNavigate(context, const AlbumDetailLayout());
         } else if (type == "music") {
           context.read<MusicProvider>().getTrackDetail(trackId);
-          normalNavigate(context, const MusicPlayer());
+          normalNavigate(context, const MusicLayout());
         } else {
           context.read<ArtistProvider>().getArtistDetail(id);
           normalNavigate(context, const ArtistDetailLayout());
@@ -152,10 +160,11 @@ class Common {
 
   static Shimmer shimmerWidget(double heightFactor, double widthFactor) {
     return Shimmer(
+      color: Colors.black87,
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.grey.shade200),
+            color: Colors.grey.shade300),
         width: SizeConfig.screenWidth * widthFactor,
         height: SizeConfig.screenHeight * heightFactor,
       ),
@@ -173,7 +182,7 @@ class Common {
   }
 
   static webHeader(BuildContext context, String id, String title, String type,
-      String subTitle) {
+      String subTitle,String artistId) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -217,7 +226,7 @@ class Common {
                             ? () {
                                 context
                                     .read<ArtistProvider>()
-                                    .getArtistDetail(id);
+                                    .getArtistDetail(artistId);
                                 normalNavigate(
                                   context,
                                   const ArtistDetailLayout(),

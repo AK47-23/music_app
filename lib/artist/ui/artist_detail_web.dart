@@ -66,7 +66,8 @@ class _ArtistDetailWebState extends State<ArtistDetailWeb> {
                           artistModel.id!,
                           artistModel.name!,
                           'artist',
-                          '${formatter.format(number)} monthly listeners'),
+                          '${formatter.format(number)} monthly listeners',
+                          ''),
                       ArtistWidget.artistTiles(
                           context, value.topList, value.newList),
                       SizedBox(
@@ -74,7 +75,7 @@ class _ArtistDetailWebState extends State<ArtistDetailWeb> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 15  ),
+                            vertical: 20, horizontal: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -83,7 +84,7 @@ class _ArtistDetailWebState extends State<ArtistDetailWeb> {
                               style: titleText2,
                             ),
                             Container(
-                              width: SizeConfig.screenWidth ,
+                              width: SizeConfig.screenWidth,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 30),
                               child: ReadMoreText(

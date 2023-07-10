@@ -1,13 +1,11 @@
-import 'dart:developer';
+
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:music_app/album/provider/album_provider.dart';
 import 'package:music_app/artist/provider/artist_provider.dart';
+import 'package:music_app/artist/ui/artist_detail_layout.dart';
 import 'package:music_app/artist/ui/artist_detail_mobile.dart';
 import 'package:music_app/music/model/track_model.dart';
-import 'package:music_app/music/provider/music_provider.dart';
-import 'package:music_app/music/ui/music_player.dart';
 import 'package:music_app/utils/common.dart';
 import 'package:music_app/utils/cs_text_style.dart';
 import 'package:music_app/utils/navigate.dart';
@@ -61,6 +59,9 @@ class AlbumDetailMobile extends StatelessWidget {
                             ),
                                 Common.makeImageResource(
                                     tracksList[0].albumId!, "albums", .3, .25),
+                            SizedBox(
+                              height: SizeConfig.screenHeight * .01,
+                            ),
                                 Text(
                                   tracksList[0].albumName!,
                                   style: titleText1,
@@ -73,7 +74,7 @@ class AlbumDetailMobile extends StatelessWidget {
                                         .getArtistDetail(tracksList[0].artistId!);
                                     normalNavigate(
                                       context,
-                                      const ArtistDetailMobile(),
+                                      const ArtistDetailLayout(),
                                     );
                                   },
                                   child: Row(

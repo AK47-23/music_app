@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:music_app/music/model/track_model.dart';
+import 'package:music_app/music/ui/checkweb.dart';
 import 'package:provider/provider.dart';
 
 import '../../music/provider/music_provider.dart';
-import '../../music/ui/music_player.dart';
+import '../../music/ui/music_player_mobile.dart';
 import '../../utils/cs_text_style.dart';
 import '../../utils/navigate.dart';
 
@@ -25,7 +26,7 @@ class AlbumWidgets{
                 .getTrackDetail(trackModel.id!);
             normalNavigate(
               context,
-              const MusicPlayer(),
+              const MusicLayout(),
             );
           },
           shape: BeveledRectangleBorder(

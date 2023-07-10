@@ -10,7 +10,7 @@ import '../../utils/size_config.dart';
 import '../provider/album_provider.dart';
 
 class AlbumDetailWeb extends StatefulWidget {
-  AlbumDetailWeb({super.key});
+  const AlbumDetailWeb({super.key});
 
   @override
   State<AlbumDetailWeb> createState() => _AlbumDetailWebState();
@@ -67,7 +67,7 @@ class _AlbumDetailWebState extends State<AlbumDetailWeb> {
                             tracksList[0].albumId!,
                             tracksList[0].albumName!,
                             'albums',
-                            '${tracksList[0].artistName} • ${tracksList.length} songs • ${formatter.format(number)} likes'),
+                            '${tracksList[0].artistName} • ${tracksList.length} songs • ${formatter.format(number)} likes', tracksList[0].artistId!),
                         AlbumWidgets().musicList(tracksList),
                       ],
                     ),
